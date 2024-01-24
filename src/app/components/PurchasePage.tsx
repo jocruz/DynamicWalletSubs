@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import {
-  ConnectWallet,
-  useAddress,
   useContract,
   useContractMetadata,
   useNFT,
@@ -12,43 +10,33 @@ import {
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-
 import { useUserWallets } from "@dynamic-labs/sdk-react-core";
 
-//Purchase Page component:
+// PurchasePage Component: Manages the display and interaction with the NFT purchase process.
 function PurchasePage() {
-  const [sub, setSub] = useState(false);
+  // State to track if the subscription process has started
+  const [isCheckoutInitiated, setCheckoutInitiated] = useState(false);
 
+  // State to store the client secret for Stripe checkout
+  const [clientSecret, setClientSecret] = useState("");
+
+  // Fetching user wallet details
   const userWallets = useUserWallets();
   const dynamicAddress = userWallets[0];
-  console.log(dynamicAddress?.address);
-  const address = useAddress();
+
+
+  // Contract interaction hooks
   const { contract } = useContract(
     process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS,
     "edition"
   );
   const { data: contractMetadata } = useContractMetadata(contract);
   const { data: nft, isLoading, error } = useNFT(contract, "0");
-  console.log(nft);
 
-  const [clientSecret, setClientSecret] = useState("");
-
-  const onClick = async () => {
-    const resp = await fetch("/api/stripe-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        buyerWalletAddress: address,
-      }),
-    });
-    if (resp.ok) {
-      const json = await resp.json();
-      setClientSecret(json.clientSecret);
-    }
-  };
-
+  // Function to initiate the Stripe checkout process
   const checkout = async () => {
     try {
+      // Request to create a Stripe checkout session
       const res = await fetch("/api/stripecheckout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -60,14 +48,14 @@ function PurchasePage() {
       }
 
       const session = await res.json();
-      console.log("Session data:", session); // Debugging
       setClientSecret(session.client_secret);
-      setSub(true);
+      setCheckoutInitiated(true);
     } catch (error) {
       console.error("Error creating Stripe checkout session:", error);
     }
   };
 
+  // Load Stripe with the publishable key
   if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
     throw 'Did you forget to add a ".env.local" file?';
   }
@@ -75,26 +63,23 @@ function PurchasePage() {
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
   );
 
-  console.log(contractMetadata?.image);
-
   return (
-    <main className="flex flex-col gap-y-8 items-center p-12">
-      <ConnectWallet />
-
+    <main className="flex flex-col justify-center items-center gap-y-8 min-h-screen p-12">
+      {/* Contract Metadata and NFT Media Renderer */}
       {contractMetadata && (
         <div className="flex flex-col gap-8 border border-gray-700 rounded-xl p-12">
           <MediaRenderer className="rounded-lg" src={nft?.metadata.image} />
-
           <div className="flex flex-col gap-2">
             <h2 className="text-xl font-extrabold">{contractMetadata.name}</h2>
             <p className="text-gray-500">
-              We are using the following contract:{" "}
-              {contractMetadata.description ||
-                "There was an error getting the contract Metadata"}
+              We are using the following contract: {contractMetadata.description || "There was an error getting the contract Metadata"}
             </p>
           </div>
         </div>
       )}
+
+      {/* Subscription Button */}
+
 
       <button
         className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:opacity-50"
@@ -103,13 +88,16 @@ function PurchasePage() {
         Subscribe
       </button>
 
-      {sub ? (
+      {/* Embedded Checkout Provider for Stripe */}
+
+{isCheckoutInitiated ? (
         <EmbeddedCheckoutProvider stripe={stripe} options={{ clientSecret }}>
           <EmbeddedCheckout />
         </EmbeddedCheckoutProvider>
       ) : (
-        <p>NONE</p>
+        <p>Check out has not been initiated so the Subscription Checkout is hiding</p>
       )}
+
     </main>
   );
 }

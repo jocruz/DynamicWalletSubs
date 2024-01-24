@@ -7,7 +7,7 @@ import {
   useUserWallets,
 } from "@dynamic-labs/sdk-react-core";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
-import PurchasePage from "../../components/PurchasePage";
+import PurchasePage from "./components/PurchasePage";
 
 export default function Home() {
   return (
@@ -23,10 +23,9 @@ export default function Home() {
           walletConnectors: [EthereumWalletConnectors],
         }}
       >
-        <PurchasePage />
         <DynamicWidget />
+        <PurchasePage />
       </DynamicContextProvider>
     </ThirdwebProvider>
   );
 }
-
