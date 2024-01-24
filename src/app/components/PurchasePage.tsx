@@ -10,6 +10,7 @@ import {
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 import { useUserWallets } from "@dynamic-labs/sdk-react-core";
 
 // PurchasePage Component: Manages the display and interaction with the NFT purchase process.
@@ -23,7 +24,6 @@ function PurchasePage() {
   // Fetching user wallet details
   const userWallets = useUserWallets();
   const dynamicAddress = userWallets[0];
-
 
   // Contract interaction hooks
   const { contract } = useContract(
@@ -72,32 +72,39 @@ function PurchasePage() {
           <div className="flex flex-col gap-2">
             <h2 className="text-xl font-extrabold">{contractMetadata.name}</h2>
             <p className="text-gray-500">
-              We are using the following contract: {contractMetadata.description || "There was an error getting the contract Metadata"}
+              We are using the following contract:{" "}
+              {contractMetadata.description ||
+                "There was an error getting the contract Metadata"}
             </p>
           </div>
         </div>
       )}
 
+      <DynamicWidget />
+
       {/* Subscription Button */}
 
-
-      <button
-        className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:opacity-50"
-        onClick={checkout}
-      >
-        Subscribe
-      </button>
+      {dynamicAddress && (
+        <button
+          className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:opacity-50"
+          onClick={checkout}
+        >
+          Subscribe
+        </button>
+      )}
 
       {/* Embedded Checkout Provider for Stripe */}
 
-{isCheckoutInitiated ? (
+      {isCheckoutInitiated ? (
         <EmbeddedCheckoutProvider stripe={stripe} options={{ clientSecret }}>
           <EmbeddedCheckout />
         </EmbeddedCheckoutProvider>
       ) : (
-        <p>Check out has not been initiated so the Subscription Checkout is hiding</p>
+        <p>
+          Check out has not been initiated so the Subscription Checkout is
+          hiding
+        </p>
       )}
-
     </main>
   );
 }

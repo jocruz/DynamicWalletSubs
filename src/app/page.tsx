@@ -3,8 +3,6 @@
 import { embeddedWallet, ThirdwebProvider } from "@thirdweb-dev/react";
 import {
   DynamicContextProvider,
-  DynamicWidget,
-  useUserWallets,
 } from "@dynamic-labs/sdk-react-core";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import PurchasePage from "./components/PurchasePage";
@@ -23,7 +21,6 @@ export default function Home() {
           walletConnectors: [EthereumWalletConnectors],
         }}
       >
-        <DynamicWidget />
         <PurchasePage />
       </DynamicContextProvider>
     </ThirdwebProvider>
