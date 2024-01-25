@@ -5,7 +5,7 @@ const { STRIPE_SECRET_KEY } = process.env;
 
 export async function POST(req: Request, res: Response) {
   if (!STRIPE_SECRET_KEY) {
-    throw 'Server misconfigured. Did you forget to add a ".env.local" file?';
+    throw 'Server misconfigured. Did you forget to add a ".env.local" file? stripeCheckOut';
   }
 
   const { buyerWalletAddress } = await req.json();
@@ -43,8 +43,9 @@ export async function POST(req: Request, res: Response) {
     line_items: [{ price: process.env.PRICE_ID as string, quantity: 1 }],
     return_url: "http://localhost:3000",
     ui_mode: "embedded",
+    metadata: {buyerWalletAddress}
   });
 
-  console.log(session);
+
   return NextResponse.json(session);
 }
