@@ -96,8 +96,8 @@ console.log("BACKEND WALLET:", NEXT_PUBLIC_BACKEND_WALLET);
           receiver: buyerWalletAddress,
           metadataWithSupply: {
             metadata: {
-              name: "Example NFT",
-              description: "Created with thirdweb Engine",
+              name: "blueEye",
+              description: "blueEye from hashlips",
             },
             supply: "1",
           },
