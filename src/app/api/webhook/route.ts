@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
 const handleCheckoutSessionCompleted = async (
   session: Stripe.Checkout.Session
 ) => {
-  console.log("ENGINE URL:", ENGINE_URL);
+console.log("ENGINE URL:", ENGINE_URL);
 console.log("ENGINE ACCESS TOKEN:", ENGINE_ACCESS_TOKEN);
 console.log("NFT CONTRACT ADDRESS:", NEXT_PUBLIC_NFT_CONTRACT_ADDRESS);
 console.log("BACKEND WALLET:", NEXT_PUBLIC_BACKEND_WALLET);
@@ -96,12 +96,12 @@ console.log("BACKEND WALLET:", NEXT_PUBLIC_BACKEND_WALLET);
           receiver: buyerWalletAddress,
           metadataWithSupply: {
             metadata: {
-              name: "blueEye",
+              name: "This is a test",
               description: "blueEye from hashlips",
             },
             supply: "1",
           },
-        }
+        } 
       );
 
       console.log("MINTED");
@@ -114,44 +114,3 @@ console.log("BACKEND WALLET:", NEXT_PUBLIC_BACKEND_WALLET);
     throw new Error("Session metadata is null or undefined.");
   }
 };
-
-// const handleChargeSucceeded = async (session: Stripe.Checkout.Session) => {
-//   if (
-//     !ENGINE_URL ||
-//     !NEXT_PUBLIC_ ||
-//     !NEXT_PUBLIC_NFT_CONTRACT_ADDRESS ||
-//     !NEXT_PUBLIC_BACKEND_WALLET
-//   ) {
-//     throw 'Server misconfigured. Did you forget to add a ".env.local" file?';
-//   }
-
-//   console.log(session.metadata)
-//   const { buyerWalletAddress } = session.metadata;
-
-//   if (!buyerWalletAddress) {
-//     throw 'Webhook metadata is missing "buyerWalletAddress".';
-//   }
-
-//   // Mint an NFT to the buyer with Engine.
-//   const engine = new Engine({
-//     url: ENGINE_URL,
-//     accessToken: NEXT_PUBLIC_,
-//   });
-//   await engine.erc1155.mintTo(
-//     "mumbai",
-//     NEXT_PUBLIC_NFT_CONTRACT_ADDRESS,
-//     NEXT_PUBLIC_BACKEND_WALLET,
-//     {
-//       receiver: buyerWalletAddress,
-//       metadataWithSupply: {
-//         metadata: {
-//           name: "Example NFT",
-//           description: "Created with thirdweb Engine",
-//           image:
-//             "ipfs://QmciR3WLJsf2BgzTSjbG5zCxsrEQ8PqsHK7JWGWsDSNo46/nft.png",
-//         },
-//         supply: "1",
-//       },
-//     }
-//   );
-// };

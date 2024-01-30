@@ -33,6 +33,7 @@ function PurchasePage() {
   const { data: contractMetadata } = useContractMetadata(contract);
   const { data: nft, isLoading, error } = useNFT(contract, "0");
 
+  const [manageUrl, setManageUrl] = useState("");
   // Function to initiate the Stripe checkout process
   const checkout = async () => {
     try {
@@ -52,6 +53,26 @@ function PurchasePage() {
       setCheckoutInitiated(true);
     } catch (error) {
       console.error("Error creating Stripe checkout session:", error);
+    }
+  };
+
+  const manageSubscription = async () => {
+    try {
+      const res = await fetch("/api/stripesubs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ buyerWalletAddress: dynamicAddress?.address }), // Replace with the actual customer ID
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+
+      const data = await res.json();
+      console.log(data);
+      setManageUrl(data.url);
+    } catch (error) {
+      console.error("Error redirecting to customer portal:", error);
     }
   };
 
@@ -85,12 +106,25 @@ function PurchasePage() {
       {/* Subscription Button */}
 
       {dynamicAddress && (
-        <button
-          className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:opacity-50"
-          onClick={checkout}
-        >
-          Subscribe
-        </button>
+        <>
+          <button
+            className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:opacity-50"
+            onClick={checkout}
+          >
+            Subscribe
+          </button>
+          <button onClick={manageSubscription}>Manage Subscription</button>
+          {manageUrl && (
+            <a
+              href={manageUrl}
+              className="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-lg"
+              target="_blank" // Open in a new tab (optional)
+              rel="noopener noreferrer" // Security for opening links in a new tab
+            >
+              Go to Customer Portal
+            </a>
+          )}
+        </>
       )}
 
       {/* Embedded Checkout Provider for Stripe */}
@@ -101,8 +135,8 @@ function PurchasePage() {
         </EmbeddedCheckoutProvider>
       ) : (
         <p>
-          Check out has not been initiated so the Subscription Checkout is
-          hiding
+          Click Subscribe to have the checkout appear, then this text will
+          dissapear
         </p>
       )}
     </main>
