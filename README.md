@@ -2,7 +2,7 @@
 
 ## 🚀 Overview
 
-This project integrates Stripe payments, dynamic wallets, and Thirdweb Engine to provide a comprehensive solution for managing cryptocurrency transactions and smart contracts. It offers a seamless user experience for buying NFTs, managing subscriptions, and handling smart contracts across various EVM chains.
+This project integrates Stripe payments, dynamic wallets, and Thirdweb Engine to provide a comprehensive solution for managing cryptocurrency transactions, NFT subscription purchases with smart contracts. It offers a seamless user experience for buying NFTs, managing subscriptions, and handling smart contracts across various EVM chains, but focusing on Eth/Munbai.
 
 ## ✨ Features
 
