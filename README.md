@@ -112,6 +112,40 @@ This project integrates Stripe payments, dynamic wallets, and Thirdweb Engine to
 
 These files collectively create a web application capable of handling blockchain transactions, including NFT minting and management, subscriptions, and payments through Stripe, while integrating user wallets and ensuring a seamless experience.
 
+
+## Windows Users
+### Windows Users: Docker Configuration and Memory Management
+
+If you are a Windows user working with Docker, especially in the context of this project, there are a few key considerations and configurations you should be aware of to ensure a smooth development experience:
+
+#### Managing Ports and Services
+
+- **SQL Ports**: If you are using Docker and SQL (PostgreSQL or similar), ensure that the port used by SQL is not being blocked or used by another service. You may need to stop the SQL service on your host machine to prevent port conflicts.
+- **PostgreSQL Services**: Before running your Docker containers, close any services related to PostgreSQL (PSQL) that are running on your host machine to avoid conflicts with Docker containers trying to use the same ports or resources.
+- The services you'll have to look out for is Postgrestsql-x64-15 & 16, you'll have to force stop both of them or any of them really.
+
+#### Memory Usage and Management
+
+- **VMware and Docker Memory Consumption**: VMware and Docker can consume a significant amount of system memory (RAM), which might lead to performance issues on your Windows machine.
+- **Configuring WSL2 Memory Limits**: To prevent excessive memory usage by WSL2 (Windows Subsystem for Linux 2), you can create a configuration file named `.wslconfig` in your user home directory. This file allows you to specify a limit to the amount of memory that WSL2 is permitted to use.
+
+  Here’s how you can set up the `.wslconfig` file to limit WSL2 memory usage:
+
+  1. Open your home directory in Windows Explorer. This is typically located at `C:\Users\YourUsername\`.
+  2. Create a new text file named `.wslconfig` (ensure that it starts with a dot and not a file extension).
+  3. Open `.wslconfig` with a text editor like Notepad and add the following lines:
+
+     ```
+     [wsl2]
+     memory=1GB
+     ```
+
+  4. Save the file. This setting limits WSL2 to use only 1GB of RAM, which can help in managing overall system resources more effectively.
+
+After configuring the `.wslconfig` file, restart WSL2 for the changes to take effect. You can do this by restarting your computer or running the `wsl --shutdown` command in the Windows command prompt, followed by starting your WSL2 instance again.
+
+By following these steps, Windows users can mitigate potential resource conflicts and performance issues while working with Docker and related technologies in development environments.
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
