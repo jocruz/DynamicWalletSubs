@@ -62,9 +62,9 @@ This project integrates Stripe payments, dynamic wallets, and Thirdweb Engine to
 - **Dynamic Wallets**: For integrating user wallet management within the application.
 
 
-## Files & Explaination
+## Files & Explainationv 🗃️ 📁📁📁 🗃️
 
-### `src/app/api/stripecheckout/route.ts`
+### `src/app/api/stripecheckout/route.ts` 📜
 
 - **Purpose**: This file handles the Stripe checkout process.
 - **Functionality**:
@@ -72,7 +72,7 @@ This project integrates Stripe payments, dynamic wallets, and Thirdweb Engine to
   - Searches for existing Stripe customers linked to the wallet address; if none found, creates a new customer.
   - Initiates a Stripe checkout session for the customer, preparing for the subscription or payment process.
 
-### `src/app/api/stripesubs/route.ts`
+### `src/app/api/stripesubs/route.ts` 📜
 
 - **Purpose**: Manages Stripe subscription sessions.
 - **Functionality**:
@@ -80,14 +80,14 @@ This project integrates Stripe payments, dynamic wallets, and Thirdweb Engine to
   - Retrieves customer information based on the wallet address.
   - Creates a Stripe billing portal session, allowing customers to manage their subscriptions.
 
-### `src/app/api/webhook/route.ts`
+### `src/app/api/webhook/route.ts` 📜
 
 - **Purpose**: Processes webhooks from Stripe to handle various events, such as the completion of a checkout session.
 - **Functionality**:
   - Validates the Stripe webhook signature to ensure the request's authenticity.
   - Processes the `checkout.session.completed` event to finalize the transaction, potentially minting an NFT using Thirdweb Engine based on the transaction details.
 
-### `src/app/components/CreditCardForm.tsx`
+### `src/app/components/CreditCardForm.tsx` 📜
 
 - **Purpose**: Renders a form for credit card information input and handles payment submission.
 - **Functionality**:
@@ -95,7 +95,7 @@ This project integrates Stripe payments, dynamic wallets, and Thirdweb Engine to
   - Manages payment state, including loading and completion statuses.
   - Submits the payment through Stripe and provides user feedback based on the transaction outcome.
 
-### `src/app/components/PurchasePage.tsx`
+### `src/app/components/PurchasePage.tsx`📜
 
 - **Purpose**: Provides the main interface for initiating NFT purchases and managing Stripe subscriptions.
 - **Functionality**:
@@ -103,7 +103,7 @@ This project integrates Stripe payments, dynamic wallets, and Thirdweb Engine to
   - Integrates with Stripe for initiating checkout and managing subscriptions.
   - Uses Dynamic Wallet integration to retrieve and use the buyer’s wallet address.
 
-### `src/app/page.tsx`
+### `src/app/page.tsx` 📜
 
 - **Purpose**: Serves as the entry point for the web application, integrating Thirdweb and Dynamic Wallet providers.
 - **Functionality**:
@@ -113,12 +113,12 @@ This project integrates Stripe payments, dynamic wallets, and Thirdweb Engine to
 These files collectively create a web application capable of handling blockchain transactions, including NFT minting and management, subscriptions, and payments through Stripe, while integrating user wallets and ensuring a seamless experience.
 
 
-## Windows Users
+# Windows Users 🖥️👨‍💻 🆘
 ### Windows Users: Docker Configuration and Memory Management
 
 If you are a Windows user working with Docker, especially in the context of this project, there are a few key considerations and configurations you should be aware of to ensure a smooth development experience:
 
-#### Managing Ports and Services
+#### Managing Ports and Services 
 
 - **SQL Ports**: If you are using Docker and SQL (PostgreSQL or similar), ensure that the port used by SQL is not being blocked or used by another service. You may need to stop the SQL service on your host machine to prevent port conflicts.
 - **PostgreSQL Services**: Before running your Docker containers, close any services related to PostgreSQL (PSQL) that are running on your host machine to avoid conflicts with Docker containers trying to use the same ports or resources.
